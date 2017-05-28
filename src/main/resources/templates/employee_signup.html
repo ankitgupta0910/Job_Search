@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--<html lang="en">-->
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Hello Job Search</title>
+</head>
+<body>
+<form action="employee_signup_submit" method="post">
+    <table>
+        <tr>
+            <td>Employee Email:</td>
+            <td><input type="email" name="empEmail" /></td>
+        </tr>
+        <tr>
+            <td>Employee Name:</td>
+            <td><input type="text" name="empName" /></td>
+        </tr>
+        <tr>
+            <td>Password:</td>
+            <td><input type="password" name="empPassword" /></td>
+        </tr>
+        <tr>
+            <td>Contact:</td>
+            <td><input type="text" name="empContact" /></td>
+        </tr>
+        <tr>
+            <td>Address:</td>
+            <td><input type="text" name="address.empAddress" /></td>
+        </tr>
+        <tr>
+            <td>City:</td>
+            <td><input type="text" name="address.empCity" /></td>
+        </tr>
+        <tr>
+            <td>State:</td>
+            <td><input type="text" name="address.empState" /></td>
+        </tr>
+        <tr>
+            <td>Country:</td>
+            <td><input type="text" name="address.empCountry" /></td>
+        </tr>
+        <tr>
+            <td>Zipcode:</td>
+            <td><input type="text" name="address.empZipcode" /></td>
+        </tr>
+        <tr>
+            <td><input type="submit" value="Submit button" /></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>

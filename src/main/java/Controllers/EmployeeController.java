@@ -3,15 +3,22 @@ package Controllers;
 import Backend.*;
 import Model.*;
 import Repository.*;
+import netscape.javascript.JSObject;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.client.RestTemplate;
 
+import java.net.URI;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,10 +34,10 @@ public class EmployeeController {
 
     private SkillsRepository skillsRepository;
 
-
     public EmployeeController(SkillsRepository skillsRepository) {
         this.skillsRepository = skillsRepository;
     }
+
 
     @RequestMapping("/")
     public String home(){
@@ -64,11 +71,43 @@ public class EmployeeController {
         return "employee_more_details";
     }
 
-    @ResponseBody
+//    @ResponseBody
     @RequestMapping(value= "/addSkills", method=RequestMethod.POST )
-    public List<Skills> addSkills(@ModelAttribute("skills") Skills skills){
+    public String addSkills(@ModelAttribute("skills") Skills skills, Model model){
+        System.out.println(skills.getEmpEmail());
         skillsRepository.save(skills);
-        return skillsRepository.findAll();
-//        return "employee_more_details";
+
+        RestTemplate restTemplate = new RestTemplate();
+
+        String glassdoorResponse = restTemplate.getForObject("http://service.dice.com/api/rest/jobsearch/v1/simple.json?skill=salesforce&city=94566",
+                String.class);
+
+        System.out.println(glassdoorResponse);
+        JSONObject jsonObj = null;
+        JSONArray jsonArray = null;
+        ArrayList<Dice> arrDc = new ArrayList<Dice>();
+
+        try {
+            jsonObj = new JSONObject(glassdoorResponse);
+            jsonArray = new JSONArray(jsonObj.getString( "resultItemList"));
+
+            for (int i =0; i<jsonArray.length(); i++)
+            {
+                arrDc.add(new Dice(jsonArray.getJSONObject(i).getString("detailUrl"),
+                        jsonArray.getJSONObject(i).getString("jobTitle"),
+                        jsonArray.getJSONObject(i).getString("company"),
+                        jsonArray.getJSONObject(i).getString("date"),
+                        jsonArray.getJSONObject(i).getString("location")));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        DiceWrapper dw = new DiceWrapper();
+        dw.setJobList(arrDc);
+
+        model.addAttribute("DW", dw);
+
+        return "employee_jobs";
     }
 }

@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<!--<html lang="en">-->
+<head>
+    <meta charset="UTF-8"></meta>
+    <title>Hello Job Search</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>Name</td>
+        <td th:text="${recruiter.empName}"></td>
+    </tr>
+
+    <tr>
+        <td>Email</td>
+        <td th:text="${recruiter.empEmail}"></td>
+    </tr>
+</table>
+<form action="addSkills" method="post">
+    <input type="text" name="recruiterEmail" th:field="*{recruiter.empEmail}" readonly="readonly"/>
+    <!-- <label  th:field="*{employee.empId}"></label> -->
+    <table>
+        <tr>
+            <td>Skills:</td>
+            <td>
+                <select name="empSkills" multiple="multiple">
+                    <option value="Java Core">Java Core</option>
+                    <option value="Spring Core">Spring Core</option>
+                    <option value="Spring MVC">Spring MVC</option>
+                    <option value="Spring Boot">Spring Boot</option>
+                    <option value="Hibernate">Hibernate</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Location Preference:</td>
+            <td>
+                <select name="empLocation" multiple="multiple">
+                    <option value="Bay Area">Bay Area</option>
+                    <option value="California">California</option>
+                    <option value="USA">USA</option>
+                </select>
+            </td>
+        </tr>
+        <tr>
+            <td>Experience:</td>
+            <td>
+                <select value="empExperience" name="empExperience">
+                    <option>0-2 years</option>
+                    <option>2-4 years</option>
+                    <option>4-6 years</option>
+                </select>
+            </td>
+        </tr>
+        <!--<tr>-->
+            <!--<td>Resume:</td>-->
+            <!--<td><input type="file" name="empResume" /></td>-->
+        <!--</tr>-->
+        <tr>
+            <td><input type="submit" value="Submit button" /></td>
+        </tr>
+    </table>
+</form>
+
+</body>
+</html>
